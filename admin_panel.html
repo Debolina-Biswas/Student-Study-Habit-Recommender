@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Admin Panel</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f4f4f4;
+padding:20px;
+}
+
+.section{
+background:white;
+padding:20px;
+margin-bottom:20px;
+border-radius:8px;
+box-shadow:0 2px 5px rgba(0,0,0,0.1);
+}
+
+.metrics{
+display:flex;
+gap:20px;
+}
+
+.metric{
+background:#eee;
+padding:15px;
+border-radius:6px;
+width:200px;
+text-align:center;
+}
+
+button{
+background:#6a5acd;
+color:white;
+border:none;
+padding:8px 15px;
+border-radius:5px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+th,td{
+border:1px solid #ddd;
+padding:8px;
+text-align:center;
+}
+
+th{
+background:#6a5acd;
+color:white;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Admin Panel</h1>
+
+<!-- ACADEMIC OVERVIEW -->
+
+<div class="section">
+
+<h2>Academic Overview</h2>
+
+<p>Total Students: {{total_students}}</p>
+<p>Average Performance: {{avg_score}}</p>
+<p>Average Stress Level: {{avg_stress}}</p>
+
+</div>
+
+
+<!-- STUDENT PERFORMANCE TABLE -->
+
+<div class="section">
+
+<h2>100 Students Performance</h2>
+
+<table>
+
+<tr>
+<th>Student ID</th>
+<th>Study Hours</th>
+<th>Quiz Score</th>
+<th>Attention Span</th>
+<th>Learning Method</th>
+</tr>
+
+{% for s in students %}
+
+<tr>
+<td>{{s.student_id}}</td>
+<td>{{s.study_hours}}</td>
+<td>{{s.quiz_score}}</td>
+<td>{{s.attention_span}}</td>
+<td>{{s.learning_method}}</td>
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+<!-- SYSTEM MANAGEMENT -->
+
+<div class="section">
+
+<h2>System Management</h2>
+
+<h3>Data Upload</h3>
+
+<form method="POST" enctype="multipart/form-data">
+
+<input type="file" name="file">
+
+<!--button type="submit">Select Files</button-->
+
+</form>
+
+</div>
+
+
+<!-- SYSTEM METRICS -->
+
+<div class="section">
+
+<h2>System Metrics</h2>
+
+<div class="metrics">
+
+<div class="metric">
+<h3>{{total_students}}</h3>
+<p>Active Students</p>
+</div>
+
+<div class="metric">
+<h3>{{total_sessions}}</h3>
+<p>Study Sessions</p>
+</div>
+
+<div class="metric">
+<h3>{{accuracy}}%</h3>
+<p>Model Accuracy</p>
+</div>
+
+<div class="metric">
+<h3>{{retrain_days}}</h3>
+<p>Days Since Last Retrain</p>
+</div>
+
+</div>
+
+</div>
+
+
+<!-- MODEL RETRAINING -->
+
+<div class="section">
+
+<h2>Model Retraining</h2>
+
+<!-- QUICK RETRAIN -->
+<form action="/quick_retrain" method="POST">
+<p>Quick Retrain (Update with recent data only)</p>
+<button type="submit">Start</button>
+</form>
+
+<br><br>
+
+<!-- FULL RETRAIN -->
+<form action="/full_retrain" method="POST">
+<p>Full Retrain (Complete model retraining)</p>
+<button type="submit">Start</button>
+</form>
+
+</div>
+
+
+<a href="/logout">Logout</a>
+
+</body>
+
+</html>
