@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Student Dashboard</title>
+
+<style>
+
+body{
+font-family: Arial;
+background:#f4f4f4;
+padding:20px;
+}
+
+.card{
+background:white;
+padding:20px;
+margin-bottom:20px;
+border-radius:8px;
+box-shadow:0 2px 5px rgba(0,0,0,0.1);
+}
+
+button{
+background:#6a5acd;
+color:white;
+border:none;
+padding:8px 15px;
+border-radius:5px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h2>Student Dashboard</h2>
+
+<!-- WEEKLY STUDY PLAN -->
+
+<div class="card">
+
+<h3>Weekly Study Plan</h3>
+
+<ul>
+{% for h in weekly_hours %}
+<li>{{h}} hours</li>
+{% endfor %}
+</ul>
+
+</div>
+
+
+<!-- RECOMMENDED TOOLS -->
+
+<div class="card">
+
+<h3>Recommended Study Tools</h3>
+
+<ul>
+{% for t in tools %}
+<li>{{t}}</li>
+{% endfor %}
+</ul>
+
+</div>
+
+
+<!-- WEEKLY STUDY SCHEDULE -->
+
+<div class="card">
+
+<h3>Weekly Study Schedule</h3>
+
+<ul>
+{% for r in routine %}
+<li>{{r}}</li>
+{% endfor %}
+</ul>
+
+</div>
+
+<script>
+
+var weekly_hours = {{ weekly_hours | tojson }};
+var performance = {{ performance | tojson }};
+
+
+// BAR CHART
+
+new Chart(document.getElementById("scheduleChart"),{
+
+type:"bar",
+
+data:{
+labels:["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
+
+datasets:[{
+label:"Study Hours",
+data:weekly_hours,
+backgroundColor:"#7e87c9"
+}]
+}
+
+});
+
+
+// LINE GRAPH
+
+new Chart(document.getElementById("performanceChart"),{
+
+type:"line",
+
+data:{
+labels:["Current","Week1","Week2","Week3"],
+
+datasets:[{
+label:"Expected Quiz Score",
+data:performance,
+borderColor:"#7e87c9",
+fill:false
+}]
+}
+
+});
+
+</script>
+
+
+<!-- EXPECTED PERFORMANCE -->
+
+<div class="card">
+
+<h3>Expected Performance Improvement</h3>
+
+<ul>
+{% for p in performance %}
+<li>{{p}} %</li>
+{% endfor %}
+</ul>
+
+</div>
+
+
+
+<!-- STUDY BEHAVIOR TRACKER -->
+
+<div class="card">
+
+<h3>Study Behavior Tracker</h3>
+
+<form method="POST" action="/log_session">
+
+Date
+
+<input type="date" name="date">
+
+<br><br>
+
+Study Duration (min)
+
+<input type="number" name="duration">
+
+<br><br>
+
+Subject
+
+<select name="subject">
+
+<option>Mathematics</option>
+<option>Science</option>
+<option>English</option>
+<option>History</option>
+
+</select>
+
+<br><br>
+
+Distractions
+
+<select name="distraction">
+
+<option>None</option>
+<option>Mobile</option>
+<option>Social Media</option>
+<option>Noise</option>
+
+</select>
+
+<br><br>
+
+Quiz Score
+
+<input type="number" name="score">
+
+<br><br>
+
+<button type="submit">Save Log</button>
+
+</form>
+
+</div>
+
+
+<!-- PERFORMANCE PROGRESS -->
+
+<div class="card">
+
+<h3>Performance Progress</h3>
+
+<p>Current Score : {{performance[0]}} %</p>
+
+<p>Predicted Next Week : {{performance[1]}} %</p>
+
+<p>Predicted Next Month : {{performance[2]}} %</p>
+
+</div>
+
+
+<!-- TODAY ROUTINE -->
+
+<div class="card">
+
+<h3>Today's Recommended Routine</h3>
+
+<p>8:00 AM - Study Mathematics</p>
+
+<p>2:00 PM - Practice Tests</p>
+
+<p>8:00 PM - Review Notes</p>
+
+</div>
+
+
+<br>
+
+<a href="/logout">Logout</a>
+
+</body>
+
+</html>
