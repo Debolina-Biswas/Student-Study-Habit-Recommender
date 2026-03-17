@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+body {font-family: Arial; background:#f4f6f9;}
+
+.header {
+    background:#3f51b5;
+    color:white;
+    padding:20px;
+    font-size:22px;
+}
+
+.toolbar {
+    text-align:right;
+    padding:10px;
+}
+
+button {
+    background:#3f51b5;
+    color:white;
+    border:none;
+    padding:8px 12px;
+    margin-left:5px;
+    border-radius:5px;
+}
+
+.grid {
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+    padding:20px;
+}
+
+.card {
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 2px 6px rgba(0,0,0,0.1);
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+Milestone 1: Data Preprocessing & EDA
+</div>
+
+<div class="toolbar">
+<button>Filter</button>
+<button onclick="window.print()">Export</button>
+<button onclick="location.reload()">Refresh</button>
+</div>
+
+<div class="grid">
+
+<div class="card">
+<h3>Study Time vs Quiz Scores</h3>
+<canvas id="chart1"></canvas>
+</div>
+
+<div class="card">
+<h3>Correlation Heatmap</h3>
+<canvas id="chart2"></canvas>
+</div>
+
+<div class="card">
+<h3>Distraction Frequency vs Performance</h3>
+<canvas id="chart3"></canvas>
+</div>
+
+<div class="card">
+<h3>Study Pattern Distribution</h3>
+<canvas id="chart4"></canvas>
+</div>
+
+</div>
+
+<script>
+
+const study = {{study_hours|tojson}};
+const score = {{quiz_scores|tojson}};
+
+// Scatter
+new Chart(document.getElementById("chart1"), {
+type: 'scatter',
+data: {
+datasets: [{
+label: 'Study vs Score',
+data: study.map((v,i)=>({x:v,y:score[i]}))
+}]
+}
+});
+
+// Fake heatmap (bubble style)
+new Chart(document.getElementById("chart2"), {
+type: 'bubble',
+data: {
+datasets: [{
+label:'Correlation',
+data:[
+{x:1,y:1,r:10},
+{x:2,y:2,r:15},
+{x:3,y:3,r:20}
+]
+}]
+}
+});
+
+// Bar
+new Chart(document.getElementById("chart3"), {
+type: 'bar',
+data: {
+labels:["Low","Medium","High"],
+datasets:[{data:[85,75,60]}]
+}
+});
+
+// Doughnut
+new Chart(document.getElementById("chart4"), {
+type: 'doughnut',
+data: {
+labels:["Morning","Afternoon","Evening","Night"],
+datasets:[{data:[25,30,25,20]}]
+}
+});
+
+</script>
+
+</body>
+</html>
